@@ -1,0 +1,21 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2010 OpenWrt.org
+# Copyright (C) 2006 Carlos Sobrinho
+
+START=50
+STOP=50
+
+NAME=ddns
+PROG=/usr/sbin/ddns
+CFGFILE=/etc/ddns.conf
+
+start()
+{
+	[ -z "${CFGFILE}" ] && return 1
+	service_start ${PROG} -m -c ${CFGFILE}
+}
+
+stop()
+{
+	service_stop ${PROG}
+}

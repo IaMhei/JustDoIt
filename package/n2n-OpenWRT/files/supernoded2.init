@@ -1,0 +1,28 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2008-2012 OpenWrt.org
+
+START=90
+NAME=supernode2
+PROG=/usr/sbin/supernode2
+
+start_instance() {
+    config_get_bool enabled "$1" 'enabled' 0; [ "$enabled" -eq 0 ] && return 1
+    config_get port "$1" 'port'; [ -n "$port" ] && append args "-l $port"
+    config_get debug "$1" 'debug' 0; [ -n "$debug" ] && append args '-v'
+	
+    service_start ${PROG} ${args}
+}
+
+stop_instance() {
+    service_stop ${PROG}
+}
+
+start() {
+    config_load 'supernode2'
+    config_foreach start_instance 'supernode'
+}
+
+stop() {
+    config_load 'supernode2'
+    config_foreach stop_instance 'supernode'
+}

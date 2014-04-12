@@ -1,0 +1,39 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2008-2012 OpenWrt.org
+
+START=90
+NAME=edge1
+PROG=/usr/sbin/edge1
+
+start_instance() {
+    local enabled ifname ipaddr supernode community key user group route ddns
+		
+    config_get_bool enabled "$1" 'enabled' 0; [ "$enabled" -eq 0 ] && return 1
+    config_get ifname "$1" 'ifname' 'edge1'; [ -n "$ifname" ] && append args "-d $ifname"
+    config_get ipaddr "$1" 'ipaddr'; [ -n "$ipaddr" ] && append args "-a $ipaddr"
+    config_get supernode "$1" 'supernode'; [ -n "$supernode" ] && append args "-l $supernode"
+    config_get community "$1" 'community'; [ -n "$community" ] && append args "-c $community"
+    config_get key "$1"	'key'; [ -n "$key" ] && append args "-k $key"
+    config_get user "$1" 'user' 'nobody'; [ -n "user" ] && user_id=$(id -u $user) && append args "-u $user_id"
+    config_get group "$1" 'group' 'nobody'; [ -n "group" ] && user_id=$(id -g $group) && append args "-g $group_id"	
+    config_get_bool route "$1" 'route' '0'; [ "$route" -eq "1" ] && append args "-r"
+    config_get_bool ddns "$1" 'ddns' '0'; [ "$ddns" -eq "1" ] && append args "-b"
+    config_get_bool debug "$1" 'debug' '0'; [ "$debug" -eq "1" ] && append args "-v"
+    append args "-f"
+	
+    service_start ${PROG} ${args}
+}
+
+stop_instance() {
+    service_stop ${PROG}
+}
+
+start() {
+    config_load 'edge1'
+    config_foreach start_instance 'edge'
+}
+
+stop() {
+    config_load 'edge1'
+    config_foreach stop_instance 'edge'
+}

@@ -1,0 +1,16 @@
+
+config global 'config'
+	option useragent 'DNSPOD Client for OpenWRT/1.0.0(iamhei@qq.com)'
+	option api_addr 'https://dnsapi.cn/'
+	option username 'yourusername'
+	option password 'yourpassword'
+	option enabled '0'
+
+config record
+	option interface 'wan'
+	option record_name 'www'
+
+config record
+	option interface 'wan'
+	option record_name '@'
+
