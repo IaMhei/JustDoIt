@@ -34,9 +34,4 @@ define Package/dnspod/install
    $(CP) ./files/* $(1)
 endef
 
-define Package/dnspod/postinst
-   [ -n "$${IPKG_INSTROOT}" ] || /etc/init.d/dnspod enable
-   exit 0
-endef
-
 $(eval $(call BuildPackage,dnspod))

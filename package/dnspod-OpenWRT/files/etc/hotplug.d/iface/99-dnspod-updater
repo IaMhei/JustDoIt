@@ -1,0 +1,5 @@
+#!/bin/sh
+[ "$ACTION" = ifup ] && {
+    logger -p6 -t DNSPOD "dnspod-updater is running."
+    /usr/sbin/dnspod 
+}
