@@ -42,21 +42,18 @@ get()
     local args
     local data
         
-    if [ -f /etc/cacert.pem ]; then
-        append args "--cacert '/etc/cacert.pem'"
-    else
-        append args "-k"
-    fi
-    
+    append args "-k" 
     append args "-s"
+    append args "--output '/tmp/dnspod.json'"
     append args "--retry 30"
     append args "-A '$USER_AGENT'"
     append args "-X POST $API_ADDR$1"
     append args "-d '$public_parameter$2'"
     [ -n "$3" ] && append args "--interface $3"  
         
-    data=$(eval "/usr/bin/curl $args")
-        
+    eval "/usr/bin/curl $args"
+    data=$(cat /tmp/dnspod.json)
+    
     if [ -n "$data" ]; then
         json_cleanup
         json_set_namespace "DNSPOD"
@@ -209,7 +206,6 @@ fi
 get 'Domain.List'
 json_select info
 json_get_var NUM domain_total
-print "The total number of domain: $NUM" 
 json_select ".."
 
 json_select domains
@@ -222,7 +218,6 @@ do
     json_select "$i"
     json_get_var D_ID id
     json_get_var D_NAME name
-    print "The $D_NAME's id: $D_ID"
     config_foreach update_record record
     json_select ".."
     let ++i
