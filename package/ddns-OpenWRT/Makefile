@@ -15,7 +15,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-src.tar.gz
 PKG_SOURCE_URL:=http://blog.a1983.com.cn/software/
-PKG_MD5SUM:=68e4e2ed0854fa5e5902f82f4d16e4f1
+PKG_MD5SUM:=8adc27cd1011a96a1a388e46a16ebdb3
 
 include $(INCLUDE_DIR)/package.mk
 
